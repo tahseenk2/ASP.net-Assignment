@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@model IEnumerable<promact.Models.Postapp>
+
+
+    <div>
+        <a class="btn btn-primary" asp-controller="Postapp" asp-action="Postmsg" >Post a new message here!</a>
+    </div>
+@foreach (var e in Model)
+{
+   
+    <div class="card" style="widht:80%">
+        <div class="card-body">
+            @if (e.commentID != 0)
+            {
+                var y = e.commentID;
+                var x = Model.Where(m => m.messageID == e.commentID).Select(m => m);
+                string l = "s";
+                string u = "s";
+                @foreach (var s in x)
+                {
+                    l = s.message;
+                    u = s.username;
+                }
+                <h6 class="card-text">COMMENT ON:</h6>
+                <p class="card-text"> MESSAGE: "@l"</p>
+            }
+
+            @if (e.shareID != 0)
+            {
+                var y = e.shareID;
+                var x = Model.Where(m => m.messageID == e.shareID).Select(m => m);
+                string l = "s";
+                string u = "s";
+                @foreach (var s in x)
+                {
+                    l = s.message;
+                    u = s.username;
+                }
+                <h6 class="card-text">REPOST ON:</h6>
+                //<p class="card-text">ID:@y</p>
+                <p class="card-text"> MESSAGE: "@l"</p>
+                <p class="card-text">USERNAME:@u</p>
+            }
+
+            <h5 class="card-title"> @e.username</h5>
+            <p class="card-text">@e.message</p>
+            <a class="btn btn-primary" asp-controller="Postapp" asp-action="Like" asp-route-id="@e.messageID">Like @e.likes</a>
+            <a class="btn btn-primary" asp-controller="Postapp" asp-action="PostComment" asp-route-id="@e.messageID">Comment</a>
+            <a class="btn btn-primary" asp-controller="Postapp" asp-action="ShareMessage" asp-route-id="@e.messageID">Share</a>
+        </div>
+    </div>
+}
